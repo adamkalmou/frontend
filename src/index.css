@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 60% 96%; /* Light Ocean Mist */
+    --foreground: 220 40% 12%; /* Deep Sea Blue */
+
+    --card: 210 70% 94%; /* Soft Aqua */
+    --card-foreground: 220 45% 12%;
+
+    --primary: 200 80% 35%; /* Vibrant Sea Green */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 40% 75%; /* Soft Ocean Blue */
+    --secondary-foreground: 220 40% 12%;
+
+    --accent: 195 85% 45%; /* Deep Aqua Glow */
+    --accent-foreground: 0 0% 100%;
+
+    --muted: 210 50% 85%;
+    --muted-foreground: 220 30% 50%;
+
+    --border: 220 40% 80%;
+    --ring: 195 85% 45%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 220 50% 15%; /* Midnight Ocean */
+    --foreground: 210 60% 90%; /* Moonlit Aqua */
+
+    --card: 220 50% 20%;
+    --card-foreground: 210 60% 90%;
+
+    --primary: 195 100% 40%; /* Glowing Deep Blue */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 40% 30%;
+    --secondary-foreground: 210 60% 90%;
+
+    --accent: 195 85% 35%;
+    --accent-foreground: 210 60% 90%;
+
+    --muted: 220 40% 25%;
+    --muted-foreground: 210 60% 80%;
+
+    --border: 220 40% 35%;
+    --ring: 195 85% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .glassmorphism {
+    @apply bg-white/50 dark:bg-gray-800/60 backdrop-blur-xl border border-white/25 dark:border-gray-700/25 shadow-lg;
+  }
+
+  .animated-gradient-button {
+    @apply relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-md;
+    @apply hover:scale-[1.05] active:scale-[0.98] transition-transform duration-200 shadow-md;
+  }
+
+  .file-drop-area {
+    @apply border-2 border-dashed rounded-xl p-8 transition-all duration-300 flex flex-col items-center justify-center text-center;
+    @apply hover:border-accent/80 hover:bg-accent/5;
+  }
+
+  .image-container {
+    @apply relative overflow-hidden rounded-xl shadow-xl transition-all duration-300;
+    @apply hover:shadow-2xl;
+  }
+
+  .wave-animation {
+    background: linear-gradient(120deg, var(--primary), var(--accent));
+    @apply bg-no-repeat bg-cover w-full h-16;
+    animation: wave-motion 4s infinite linear;
+  }
+
+  @keyframes wave-motion {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+}
