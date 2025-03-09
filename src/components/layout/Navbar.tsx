@@ -1,12 +1,12 @@
-
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Fish, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   // Handle scroll event to change navbar appearance
   useEffect(() => {
@@ -21,6 +21,22 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Function to handle smooth scrolling to sections
+  const scrollToSection = (sectionId: string) => {
+    setIsMobileMenuOpen(false);
+    
+    // If we're already on the home page
+    if (location.pathname === '/') {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // If we're on another page, navigate to home with the hash
+      window.location.href = `/#${sectionId}`;
+    }
+  };
 
   return (
     <header
@@ -46,24 +62,24 @@ const Navbar = () => {
             >
               Home
             </Link>
-            <Link
-              to="/#about"
+            <button
+              onClick={() => scrollToSection("about")}
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
               About
-            </Link>
-            <Link
-              to="/#models"
+            </button>
+            <button
+              onClick={() => scrollToSection("models")}
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
               Models
-            </Link>
-            <Link
-              to="/#research"
+            </button>
+            <button
+              onClick={() => scrollToSection("research")}
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
               Research
-            </Link>
+            </button>
             <Button asChild className="bg-sky-600 hover:bg-sky-700">
               <Link to="/predict">Test Model</Link>
             </Button>
@@ -94,27 +110,24 @@ const Navbar = () => {
             >
               Home
             </Link>
-            <Link
-              to="/#about"
-              className="py-2 text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
+            <button
+              onClick={() => scrollToSection("about")}
+              className="py-2 text-left text-foreground hover:text-primary transition-colors"
             >
               About
-            </Link>
-            <Link
-              to="/#models"
-              className="py-2 text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
+            </button>
+            <button
+              onClick={() => scrollToSection("models")}
+              className="py-2 text-left text-foreground hover:text-primary transition-colors"
             >
               Models
-            </Link>
-            <Link
-              to="/#research"
-              className="py-2 text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
+            </button>
+            <button
+              onClick={() => scrollToSection("research")}
+              className="py-2 text-left text-foreground hover:text-primary transition-colors"
             >
               Research
-            </Link>
+            </button>
             <Button 
               asChild 
               className="bg-sky-600 hover:bg-sky-700 w-full"
