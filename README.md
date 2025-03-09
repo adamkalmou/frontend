@@ -14,8 +14,6 @@ The application allows users to upload CSV data containing environmental paramet
 
 ## Project Info
 
-**URL**: https://lovable.dev/projects/4cf062f9-27f6-4cb4-a0cc-be9621c60735
-
 ## Frontend Setup
 
 To run the frontend:
@@ -76,31 +74,3 @@ The application accepts CSV files with the following columns:
 4. Select the species (sardine or rails)
 5. Click "Generate Map" to create the prediction visualization
 6. Download the generated map if needed
-
-## How to Edit This Code
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/4cf062f9-27f6-4cb4-a0cc-be9621c60735) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
