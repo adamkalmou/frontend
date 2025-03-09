@@ -1,9 +1,23 @@
-
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Fish, Anchor, Github, Twitter, Mail } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const location = useLocation();
+
+  // Function to handle smooth scrolling to sections
+  const scrollToSection = (sectionId: string) => {
+    // If we're already on the home page
+    if (location.pathname === '/') {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // If we're on another page, navigate to home with the hash
+      window.location.href = `/#${sectionId}`;
+    }
+  };
 
   return (
     <footer className="bg-sky-900 text-white">
@@ -31,15 +45,24 @@ const Footer = () => {
               <Link to="/" className="text-sky-200 hover:text-white transition-colors">
                 Home
               </Link>
-              <Link to="/#about" className="text-sky-200 hover:text-white transition-colors">
+              <button 
+                onClick={() => scrollToSection("about")} 
+                className="text-left text-sky-200 hover:text-white transition-colors"
+              >
                 About
-              </Link>
-              <Link to="/#models" className="text-sky-200 hover:text-white transition-colors">
+              </button>
+              <button 
+                onClick={() => scrollToSection("models")} 
+                className="text-left text-sky-200 hover:text-white transition-colors"
+              >
                 Models
-              </Link>
-              <Link to="/#research" className="text-sky-200 hover:text-white transition-colors">
+              </button>
+              <button 
+                onClick={() => scrollToSection("research")} 
+                className="text-left text-sky-200 hover:text-white transition-colors"
+              >
                 Research
-              </Link>
+              </button>
               <Link to="/predict" className="text-sky-200 hover:text-white transition-colors">
                 Test Model
               </Link>
@@ -58,7 +81,7 @@ const Footer = () => {
                 contact@oceanpredict.org
               </a>
               <a
-                href="https://github.com/oceanpredict"
+                href="https://github.com/adamkalmou/frontend"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center text-sky-200 hover:text-white transition-colors"
