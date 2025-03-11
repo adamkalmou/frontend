@@ -1,4 +1,3 @@
-
 import { useState, useRef, ChangeEvent, FormEvent } from "react";
 import { toast } from "sonner";
 import { Upload, FileUp, Download, RefreshCw, FileX, MessageSquare } from "lucide-react";
@@ -17,7 +16,7 @@ const API_URL = "https://sheltered-plains-07059-a487713a3ce8.herokuapp.com";
 const Predict = () => {
   const [file, setFile] = useState<File | null>(null);
   const [species, setSpecies] = useState<string>("sardine");
-  const [imagePath, setImagePath] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
@@ -72,13 +71,11 @@ const Predict = () => {
     setUploadProgress(0);
     setAnalysis(null);
     
-    // Create form data
     const formData = new FormData();
     formData.append("file", file);
     formData.append("species", species);
 
     try {
-      // Simulate upload progress (since fetch doesn't natively support progress)
       const progressInterval = setInterval(() => {
         setUploadProgress((prev) => {
           if (prev >= 90) {
@@ -103,7 +100,8 @@ const Predict = () => {
       }
 
       const data = await response.json();
-      setImagePath(`${API_URL}/${data.image_path}`);
+      // Update to use the direct Cloudinary URL instead of a path
+      setImageUrl(data.image_url);
       toast.success(`${species.charAt(0).toUpperCase() + species.slice(1)} prediction map generated successfully`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An unknown error occurred");
@@ -113,7 +111,7 @@ const Predict = () => {
   };
 
   const handleAnalyze = async () => {
-    if (!imagePath) {
+    if (!imageUrl) {
       toast.error("Please generate a map first");
       return;
     }
@@ -145,10 +143,9 @@ const Predict = () => {
   };
 
   const handleDownload = () => {
-    if (imagePath) {
-      // Convert the display URL to a download URL
-      const downloadUrl = `${API_URL}/download/${species}`;
-      window.open(downloadUrl, '_blank');
+    if (imageUrl) {
+      // For Cloudinary URLs, we can directly open them in a new tab for download
+      window.open(imageUrl, '_blank');
     }
   };
 
@@ -158,7 +155,7 @@ const Predict = () => {
         <div className="max-w-4xl w-full space-y-12">
           <div className="text-center">
             <h1 className="text-4xl font-semibold tracking-tight animate-slide-up">
-              <span className="text-sky-600">Species Distribution</span> Prediction Tool
+              <span className="text-sky-600 dark:text-sky-400">Species Distribution</span> Prediction Tool
             </h1>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
               Upload your CSV data to generate prediction maps for sardine and rails species distribution.
@@ -166,8 +163,8 @@ const Predict = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-zoom-in" style={{ animationDelay: "0.2s" }}>
-            <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-sky-100">
-              <CardHeader className="bg-gradient-to-r from-sky-50 to-blue-50">
+            <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-sky-100 dark:border-sky-900">
+              <CardHeader className="bg-gradient-to-r from-sky-50 to-blue-50 dark:from-sky-950 dark:to-blue-950">
                 <CardTitle>Upload Dataset</CardTitle>
                 <CardDescription>
                   Select a CSV file containing the required parameters for species prediction
@@ -176,7 +173,7 @@ const Predict = () => {
               <CardContent className="pt-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div 
-                    className={`file-drop-area ${file ? 'border-sky-500 bg-sky-50' : 'border-dashed'}`}
+                    className={`file-drop-area ${file ? 'border-sky-500 bg-sky-50 dark:bg-sky-950' : 'border-dashed'}`}
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                   >
@@ -206,7 +203,7 @@ const Predict = () => {
                       </div>
                     ) : (
                       <div className="text-center">
-                        <p className="font-medium text-sky-700 mb-2">{file.name}</p>
+                        <p className="font-medium text-sky-700 dark:text-sky-400 mb-2">{file.name}</p>
                         <p className="text-sm text-muted-foreground mb-3">
                           {(file.size / 1024).toFixed(2)} KB
                         </p>
@@ -232,11 +229,11 @@ const Predict = () => {
                       className="grid grid-cols-2 gap-4"
                       disabled={isLoading}
                     >
-                      <div className="flex items-center space-x-2 p-3 rounded-lg border border-sky-100 hover:bg-sky-50">
+                      <div className="flex items-center space-x-2 p-3 rounded-lg border border-sky-100 dark:border-sky-800 hover:bg-sky-50 dark:hover:bg-sky-950">
                         <RadioGroupItem value="sardine" id="sardine" />
                         <Label htmlFor="sardine" className="cursor-pointer">Sardine</Label>
                       </div>
-                      <div className="flex items-center space-x-2 p-3 rounded-lg border border-sky-100 hover:bg-sky-50">
+                      <div className="flex items-center space-x-2 p-3 rounded-lg border border-sky-100 dark:border-sky-800 hover:bg-sky-50 dark:hover:bg-sky-950">
                         <RadioGroupItem value="rails" id="rails" />
                         <Label htmlFor="rails" className="cursor-pointer">Rails</Label>
                       </div>
@@ -253,7 +250,7 @@ const Predict = () => {
                   )}
                 </form>
               </CardContent>
-              <CardFooter className="flex justify-between gap-2 bg-gradient-to-r from-sky-50 to-blue-50">
+              <CardFooter className="flex justify-between gap-2 bg-gradient-to-r from-sky-50 to-blue-50 dark:from-sky-950 dark:to-blue-950">
                 <Button 
                   className="bg-sky-600 hover:bg-sky-700 text-white"
                   onClick={handleSubmit}
@@ -265,7 +262,7 @@ const Predict = () => {
                 <Button
                   className="bg-emerald-600 hover:bg-emerald-700 text-white"
                   onClick={handleAnalyze}
-                  disabled={!imagePath || isAnalyzing}
+                  disabled={!imageUrl || isAnalyzing}
                 >
                   {isAnalyzing ? <RefreshCw className="mr-2 h-4 w-4 animate-spin" /> : <MessageSquare className="mr-2 h-4 w-4" />}
                   Analyze Map
@@ -273,8 +270,8 @@ const Predict = () => {
               </CardFooter>
             </Card>
 
-            <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-sky-100">
-              <CardHeader className="bg-gradient-to-r from-sky-50 to-blue-50">
+            <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-sky-100 dark:border-sky-900">
+              <CardHeader className="bg-gradient-to-r from-sky-50 to-blue-50 dark:from-sky-950 dark:to-blue-950">
                 <CardTitle>Prediction Results</CardTitle>
                 <CardDescription>
                   Visualized prediction results and analysis for selected species
@@ -287,12 +284,12 @@ const Predict = () => {
                     <TabsTrigger value="analysis" disabled={!analysis}>Analysis</TabsTrigger>
                   </TabsList>
                   <TabsContent value="map" className="mt-4">
-                    <div className="image-container w-full h-[300px] bg-sky-50 border border-sky-100 flex items-center justify-center rounded-xl">
+                    <div className="image-container w-full h-[300px] bg-sky-50 dark:bg-sky-950 border border-sky-100 dark:border-sky-900 flex items-center justify-center rounded-xl">
                       {isLoading ? (
                         <Skeleton className="w-full h-full rounded-xl" />
-                      ) : imagePath ? (
+                      ) : imageUrl ? (
                         <img 
-                          src={imagePath} 
+                          src={imageUrl} 
                           alt={`${species} prediction map`} 
                           className="w-full h-full object-contain animate-fade-in"
                           onError={() => toast.error("Failed to load image")}
@@ -306,7 +303,7 @@ const Predict = () => {
                     </div>
                   </TabsContent>
                   <TabsContent value="analysis" className="mt-4">
-                    <ScrollArea className="h-[300px] w-full border rounded-xl bg-sky-50 p-4">
+                    <ScrollArea className="h-[300px] w-full border rounded-xl bg-sky-50 dark:bg-sky-950 p-4">
                       {analysis ? (
                         <div className="text-left whitespace-pre-line">
                           <h3 className="font-semibold mb-2">Analyse de distribution de {species}</h3>
@@ -323,12 +320,12 @@ const Predict = () => {
                   </TabsContent>
                 </Tabs>
               </CardContent>
-              <CardFooter className="flex justify-center bg-gradient-to-r from-sky-50 to-blue-50">
+              <CardFooter className="flex justify-center bg-gradient-to-r from-sky-50 to-blue-50 dark:from-sky-950 dark:to-blue-950">
                 <Button
                   variant="outline"
                   onClick={handleDownload}
-                  disabled={!imagePath || isLoading}
-                  className="border-sky-200 hover:bg-sky-100"
+                  disabled={!imageUrl || isLoading}
+                  className="border-sky-200 dark:border-sky-800 hover:bg-sky-100 dark:hover:bg-sky-900"
                 >
                   <Download className="mr-2 h-4 w-4" />
                   Download Map
@@ -340,7 +337,7 @@ const Predict = () => {
           <div className="animate-fade-in text-center text-sm text-muted-foreground" style={{ animationDelay: "0.3s" }}>
             <p>Upload CSV files with columns: LAT_DD, LONG_DD, Salinite, Temp, DO, pH</p>
             <p className="mt-1">The model will predict species distribution based on these parameters</p>
-            <p className="mt-1 text-sky-600">New feature: AI-powered analysis of distribution patterns</p>
+            <p className="mt-1 text-sky-600 dark:text-sky-400">New feature: AI-powered analysis of distribution patterns</p>
           </div>
         </div>
       </div>
