@@ -11,6 +11,7 @@ import MainLayout from "@/components/layout/MainLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+// You may need to update this URL to your deployed backend
 const API_URL = "https://sheltered-plains-07059-a487713a3ce8.herokuapp.com";
 
 const Predict = () => {
@@ -100,7 +101,7 @@ const Predict = () => {
       }
 
       const data = await response.json();
-      // Update to use the direct Cloudinary URL instead of a path
+      // Updated to use the direct Cloudinary URL
       setImageUrl(data.image_url);
       toast.success(`${species.charAt(0).toUpperCase() + species.slice(1)} prediction map generated successfully`);
     } catch (err) {
@@ -149,6 +150,7 @@ const Predict = () => {
     }
   };
 
+  // ... keep existing code (the JSX part remains mostly the same)
   return (
     <MainLayout>
       <div className="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 animate-fade-in">
@@ -337,7 +339,7 @@ const Predict = () => {
           <div className="animate-fade-in text-center text-sm text-muted-foreground" style={{ animationDelay: "0.3s" }}>
             <p>Upload CSV files with columns: LAT_DD, LONG_DD, Salinite, Temp, DO, pH</p>
             <p className="mt-1">The model will predict species distribution based on these parameters</p>
-            <p className="mt-1 text-sky-600 dark:text-sky-400">New feature: AI-powered analysis of distribution patterns</p>
+            <p className="mt-1 text-sky-600 dark:text-sky-400">New feature: AI-powered analysis of distribution patterns using Cloudinary for improved image storage</p>
           </div>
         </div>
       </div>
