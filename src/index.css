@@ -4,83 +4,50 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 220 25% 10%;
+    --background: 210 60% 96%; /* Light Ocean Mist */
+    --foreground: 220 40% 12%; /* Deep Sea Blue */
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 25% 10%;
+    --card: 210 70% 94%; /* Soft Aqua */
+    --card-foreground: 220 45% 12%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 10%;
+    --primary: 200 80% 35%; /* Vibrant Sea Green */
+    --primary-foreground: 0 0% 100%;
 
-    --primary: 220 55% 15%;
-    --primary-foreground: 210 40% 98%;
+    --secondary: 220 40% 75%; /* Soft Ocean Blue */
+    --secondary-foreground: 220 40% 12%;
 
-    --secondary: 210 30% 95%;
-    --secondary-foreground: 220 25% 10%;
+    --accent: 195 85% 45%; /* Deep Aqua Glow */
+    --accent-foreground: 0 0% 100%;
 
-    --muted: 210 40% 93%;
-    --muted-foreground: 220, 10%, 45%;
+    --muted: 210 50% 85%;
+    --muted-foreground: 220 30% 50%;
 
-    --accent: 210 40% 90%;
-    --accent-foreground: 220 55% 15%;
-
-    --destructive: 0 80% 55%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 220 25% 85%;
-    --input: 220 25% 85%;
-    --ring: 220 55% 15%;
-
-    --radius: 0.625rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 220 40% 80%;
+    --ring: 195 85% 45%;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
+    --background: 220 50% 15%; /* Midnight Ocean */
+    --foreground: 210 60% 90%; /* Moonlit Aqua */
 
-    --card: 222 47% 15%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 50% 20%;
+    --card-foreground: 210 60% 90%;
 
-    --popover: 222 47% 15%;
-    --popover-foreground: 210 40% 98%;
+    --primary: 195 100% 40%; /* Glowing Deep Blue */
+    --primary-foreground: 0 0% 100%;
 
-    --primary: 199 89% 48%;
-    --primary-foreground: 210 40% 98%;
+    --secondary: 220 40% 30%;
+    --secondary-foreground: 210 60% 90%;
 
-    --secondary: 217 33% 20%;
-    --secondary-foreground: 210 40% 98%;
+    --accent: 195 85% 35%;
+    --accent-foreground: 210 60% 90%;
 
-    --muted: 217 33% 20%;
-    --muted-foreground: 210 40% 80%;
+    --muted: 220 40% 25%;
+    --muted-foreground: 210 60% 80%;
 
-    --accent: 217 33% 25%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 40%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217 33% 25%;
-    --input: 217 33% 25%;
-    --ring: 199 89% 48%;
-
-    --sidebar-background: 222 47% 11%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 199 89% 48%;
-    --sidebar-primary-foreground: 222 47% 11%;
-    --sidebar-accent: 217 33% 20%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 217 33% 25%;
-    --sidebar-ring: 199 89% 48%;
+    --border: 220 40% 35%;
+    --ring: 195 85% 40%;
   }
 }
 
@@ -97,25 +64,32 @@
 
 @layer components {
   .glassmorphism {
-    @apply bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border border-white/20 dark:border-gray-800/20;
-  }
-  
-  .animated-gradient-button {
-    @apply relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all bg-primary text-primary-foreground rounded-md;
-    @apply hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200;
-  }
-  
-  .file-drop-area {
-    @apply border-2 border-dashed rounded-xl p-8 transition-all duration-300 flex flex-col items-center justify-center text-center;
-    @apply hover:border-primary/80 hover:bg-primary/5;
-  }
-  
-  .image-container {
-    @apply relative overflow-hidden rounded-xl shadow-lg transition-all duration-300;
-    @apply hover:shadow-xl;
+    @apply bg-white/50 dark:bg-gray-800/60 backdrop-blur-xl border border-white/25 dark:border-gray-700/25 shadow-lg;
   }
 
-  .dark-toggle {
-    @apply rounded-full p-2 hover:bg-accent transition-colors;
+  .animated-gradient-button {
+    @apply relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium transition-all bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-md;
+    @apply hover:scale-[1.05] active:scale-[0.98] transition-transform duration-200 shadow-md;
+  }
+
+  .file-drop-area {
+    @apply border-2 border-dashed rounded-xl p-8 transition-all duration-300 flex flex-col items-center justify-center text-center;
+    @apply hover:border-accent/80 hover:bg-accent/5;
+  }
+
+  .image-container {
+    @apply relative overflow-hidden rounded-xl shadow-xl transition-all duration-300;
+    @apply hover:shadow-2xl;
+  }
+
+  .wave-animation {
+    background: linear-gradient(120deg, var(--primary), var(--accent));
+    @apply bg-no-repeat bg-cover w-full h-16;
+    animation: wave-motion 4s infinite linear;
+  }
+
+  @keyframes wave-motion {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
   }
 }
