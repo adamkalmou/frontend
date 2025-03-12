@@ -102,7 +102,8 @@ const Predict = () => {
       }
 
       const data = await response.json();
-      setImagePath(`${API_URL}/${data.image_path}`);
+      // Use the returned image_url directly from Cloudinary
+      setImagePath(data.image_url);
       toast.success(`${species.charAt(0).toUpperCase() + species.slice(1)} prediction map generated successfully`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An unknown error occurred");
@@ -145,9 +146,8 @@ const Predict = () => {
 
   const handleDownload = () => {
     if (imagePath) {
-      // Convert the display URL to a download URL
-      const downloadUrl = `${API_URL}/download/${species}`;
-      window.open(downloadUrl, '_blank');
+      // Directly open the Cloudinary image URL for download
+      window.open(imagePath, '_blank');
     }
   };
 
