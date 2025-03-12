@@ -23,11 +23,10 @@ const Predict = () => {
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Handle file selection
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
-      if (selectedFile.name.endsWith(".csv")) {
+      if (selectedFile.name.endsWith('.csv')) {
         setFile(selectedFile);
         toast.success("CSV file selected successfully");
       } else {
@@ -37,12 +36,11 @@ const Predict = () => {
     }
   };
 
-  // Handle file drop
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const droppedFile = e.dataTransfer.files[0];
-      if (droppedFile.name.endsWith(".csv")) {
+      if (droppedFile.name.endsWith('.csv')) {
         setFile(droppedFile);
         toast.success("CSV file dropped successfully");
       } else {
@@ -51,12 +49,10 @@ const Predict = () => {
     }
   };
 
-  // Handle drag over
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
 
-  // Clear selected file
   const clearFile = () => {
     setFile(null);
     if (fileInputRef.current) {
@@ -64,7 +60,6 @@ const Predict = () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!file) {
@@ -75,13 +70,14 @@ const Predict = () => {
     setIsLoading(true);
     setUploadProgress(0);
     setAnalysis(null);
-
+    
+    // Create form data
     const formData = new FormData();
     formData.append("file", file);
     formData.append("species", species);
 
     try {
-      // Simulate upload progress
+      // Simulate upload progress (since fetch doesn't natively support progress)
       const progressInterval = setInterval(() => {
         setUploadProgress((prev) => {
           if (prev >= 90) {
@@ -99,14 +95,14 @@ const Predict = () => {
 
       clearInterval(progressInterval);
       setUploadProgress(100);
-
+      
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.error || "Failed to process data");
       }
 
       const data = await response.json();
-      setImagePath(`${API_URL}${data.image_path}`);
+      setImagePath(`${API_URL}/${data.image_path}`);
       toast.success(`${species.charAt(0).toUpperCase() + species.slice(1)} prediction map generated successfully`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An unknown error occurred");
@@ -115,7 +111,6 @@ const Predict = () => {
     }
   };
 
-  // Handle analysis request
   const handleAnalyze = async () => {
     if (!imagePath) {
       toast.error("Please generate a map first");
@@ -125,12 +120,12 @@ const Predict = () => {
     setIsAnalyzing(true);
 
     try {
+      const formData = new FormData();
+      formData.append("species", species);
+
       const response = await fetch(`${API_URL}/analyze`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ species }),
+        body: formData
       });
 
       if (!response.ok) {
@@ -148,11 +143,11 @@ const Predict = () => {
     }
   };
 
-  // Handle map download
   const handleDownload = () => {
     if (imagePath) {
+      // Convert the display URL to a download URL
       const downloadUrl = `${API_URL}/download/${species}`;
-      window.open(downloadUrl, "_blank");
+      window.open(downloadUrl, '_blank');
     }
   };
 
@@ -170,7 +165,6 @@ const Predict = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-zoom-in" style={{ animationDelay: "0.2s" }}>
-            {/* File Upload Card */}
             <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-sky-100">
               <CardHeader className="bg-gradient-to-r from-sky-50 to-blue-50">
                 <CardTitle>Upload Dataset</CardTitle>
@@ -180,8 +174,8 @@ const Predict = () => {
               </CardHeader>
               <CardContent className="pt-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div
-                    className={`file-drop-area ${file ? "border-sky-500 bg-sky-50" : "border-dashed"}`}
+                  <div 
+                    className={`file-drop-area ${file ? 'border-sky-500 bg-sky-50' : 'border-dashed'}`}
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                   >
@@ -193,13 +187,14 @@ const Predict = () => {
                       ref={fileInputRef}
                       disabled={isLoading}
                     />
+                    
                     {!file ? (
                       <div className="text-center">
                         <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-3" />
                         <p className="font-medium">Drop your CSV file here or</p>
-                        <Button
-                          type="button"
-                          variant="secondary"
+                        <Button 
+                          type="button" 
+                          variant="secondary" 
                           className="mt-2"
                           onClick={() => fileInputRef.current?.click()}
                           disabled={isLoading}
@@ -214,9 +209,9 @@ const Predict = () => {
                         <p className="text-sm text-muted-foreground mb-3">
                           {(file.size / 1024).toFixed(2)} KB
                         </p>
-                        <Button
-                          type="button"
-                          variant="outline"
+                        <Button 
+                          type="button" 
+                          variant="outline" 
                           size="sm"
                           onClick={clearFile}
                           disabled={isLoading}
@@ -230,8 +225,8 @@ const Predict = () => {
 
                   <div className="space-y-3">
                     <Label>Select Species</Label>
-                    <RadioGroup
-                      value={species}
+                    <RadioGroup 
+                      value={species} 
                       onValueChange={setSpecies}
                       className="grid grid-cols-2 gap-4"
                       disabled={isLoading}
@@ -251,14 +246,14 @@ const Predict = () => {
                     <div className="space-y-2">
                       <Progress value={uploadProgress} className="h-2" />
                       <p className="text-xs text-muted-foreground text-center">
-                        {uploadProgress < 100 ? "Processing data..." : "Generating map..."}
+                        {uploadProgress < 100 ? 'Processing data...' : 'Generating map...'}
                       </p>
                     </div>
                   )}
                 </form>
               </CardContent>
               <CardFooter className="flex justify-between gap-2 bg-gradient-to-r from-sky-50 to-blue-50">
-                <Button
+                <Button 
                   className="bg-sky-600 hover:bg-sky-700 text-white"
                   onClick={handleSubmit}
                   disabled={!file || isLoading}
@@ -277,7 +272,6 @@ const Predict = () => {
               </CardFooter>
             </Card>
 
-            {/* Results Card */}
             <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-sky-100">
               <CardHeader className="bg-gradient-to-r from-sky-50 to-blue-50">
                 <CardTitle>Prediction Results</CardTitle>
@@ -296,9 +290,9 @@ const Predict = () => {
                       {isLoading ? (
                         <Skeleton className="w-full h-full rounded-xl" />
                       ) : imagePath ? (
-                        <img
-                          src={imagePath}
-                          alt={`${species} prediction map`}
+                        <img 
+                          src={imagePath} 
+                          alt={`${species} prediction map`} 
                           className="w-full h-full object-contain animate-fade-in"
                           onError={() => toast.error("Failed to load image")}
                         />
