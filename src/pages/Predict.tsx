@@ -1,3 +1,4 @@
+
 import { useState, useRef, ChangeEvent, FormEvent } from "react";
 import { toast } from "sonner";
 import { Upload, FileUp, Download, RefreshCw, FileX, MessageSquare } from "lucide-react";
@@ -77,7 +78,7 @@ const Predict = () => {
     formData.append("species", species);
 
     try {
-      // Simulate upload progress
+      // Simulate upload progress (since fetch doesn't natively support progress)
       const progressInterval = setInterval(() => {
         setUploadProgress((prev) => {
           if (prev >= 90) {
@@ -102,7 +103,7 @@ const Predict = () => {
       }
 
       const data = await response.json();
-      setImagePath(data.image_url);
+      setImagePath(`${API_URL}/${data.image_path}`);
       toast.success(`${species.charAt(0).toUpperCase() + species.slice(1)} prediction map generated successfully`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An unknown error occurred");
@@ -120,14 +121,12 @@ const Predict = () => {
     setIsAnalyzing(true);
 
     try {
+      const formData = new FormData();
+      formData.append("species", species);
+
       const response = await fetch(`${API_URL}/analyze`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          species: species
-        })
+        body: formData
       });
 
       if (!response.ok) {
@@ -147,7 +146,9 @@ const Predict = () => {
 
   const handleDownload = () => {
     if (imagePath) {
-      window.open(imagePath, '_blank');
+      // Convert the display URL to a download URL
+      const downloadUrl = `${API_URL}/download/${species}`;
+      window.open(downloadUrl, '_blank');
     }
   };
 
@@ -165,7 +166,6 @@ const Predict = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-zoom-in" style={{ animationDelay: "0.2s" }}>
-            {/* File Upload Card */}
             <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-sky-100">
               <CardHeader className="bg-gradient-to-r from-sky-50 to-blue-50">
                 <CardTitle>Upload Dataset</CardTitle>
@@ -273,7 +273,6 @@ const Predict = () => {
               </CardFooter>
             </Card>
 
-            {/* Results Card */}
             <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-sky-100">
               <CardHeader className="bg-gradient-to-r from-sky-50 to-blue-50">
                 <CardTitle>Prediction Results</CardTitle>
