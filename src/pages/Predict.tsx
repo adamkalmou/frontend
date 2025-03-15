@@ -77,7 +77,7 @@ const Predict = () => {
     formData.append("species", species);
 
     try {
-      // Simulate upload progress (since fetch doesn't natively support progress)
+      // Simulate upload progress
       const progressInterval = setInterval(() => {
         setUploadProgress((prev) => {
           if (prev >= 90) {
@@ -102,7 +102,6 @@ const Predict = () => {
       }
 
       const data = await response.json();
-      // Use the returned image_url directly from Cloudinary
       setImagePath(data.image_url);
       toast.success(`${species.charAt(0).toUpperCase() + species.slice(1)} prediction map generated successfully`);
     } catch (err) {
@@ -121,12 +120,14 @@ const Predict = () => {
     setIsAnalyzing(true);
 
     try {
-      const formData = new FormData();
-      formData.append("species", species);
-
       const response = await fetch(`${API_URL}/analyze`, {
         method: "POST",
-        body: formData
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          species: species
+        })
       });
 
       if (!response.ok) {
@@ -146,7 +147,6 @@ const Predict = () => {
 
   const handleDownload = () => {
     if (imagePath) {
-      // Directly open the Cloudinary image URL for download
       window.open(imagePath, '_blank');
     }
   };
@@ -165,6 +165,7 @@ const Predict = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-zoom-in" style={{ animationDelay: "0.2s" }}>
+            {/* File Upload Card */}
             <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-sky-100">
               <CardHeader className="bg-gradient-to-r from-sky-50 to-blue-50">
                 <CardTitle>Upload Dataset</CardTitle>
@@ -272,6 +273,7 @@ const Predict = () => {
               </CardFooter>
             </Card>
 
+            {/* Results Card */}
             <Card className="overflow-hidden transition-all duration-300 hover:shadow-md border-sky-100">
               <CardHeader className="bg-gradient-to-r from-sky-50 to-blue-50">
                 <CardTitle>Prediction Results</CardTitle>
