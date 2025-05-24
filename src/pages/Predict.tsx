@@ -12,7 +12,7 @@ import MainLayout from "@/components/layout/MainLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const API_URL = "https://sheltered-plains-07059-a487713a3ce8.herokuapp.com";
+const API_URL = "https://backendd-mg0r.onrender.com/";
 
 const Predict = () => {
   const [file, setFile] = useState<File | null>(null);
