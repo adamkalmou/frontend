@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 
-const API_URL = "https://backendd-mg0r.onrender.com/";
+const API_URL = "https://backendd-88820583523.europe-west9.run.app";
 
 const Index = () => {
   const [file, setFile] = useState<File | null>(null);
