@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 
-const API_URL = "/api";
+const API_URL = "api/";
 
 const Index = () => {
   const [file, setFile] = useState<File | null>(null);
