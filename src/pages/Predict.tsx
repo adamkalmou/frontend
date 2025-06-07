@@ -12,7 +12,7 @@ import MainLayout from "@/components/layout/MainLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const API_URL = "/api";
+const API_URL = "/api/";
 
 const Predict = () => {
   const [file, setFile] = useState<File | null>(null);
