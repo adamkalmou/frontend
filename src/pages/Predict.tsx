@@ -103,7 +103,7 @@ const Predict = () => {
       }
 
       const data = await response.json();
-      setImagePath(`${API_URL}/${data.image_path}`);
+      setImagePath(`${API_URL}/images/${data.image_path}`);
       toast.success(`${species.charAt(0).toUpperCase() + species.slice(1)} prediction map generated successfully`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "An unknown error occurred");
