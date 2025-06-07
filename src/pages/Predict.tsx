@@ -12,7 +12,7 @@ import MainLayout from "@/components/layout/MainLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const API_URL = "https://backendd-88820583523.europe-west9.run.app";
+const API_URL = "http://34.155.252.211:8080/";
 
 const Predict = () => {
   const [file, setFile] = useState<File | null>(null);
