@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 
-const API_URL = "http://34.155.252.211:8080/";
+const API_URL = "https://34.155.252.211";
 
 const Index = () => {
   const [file, setFile] = useState<File | null>(null);
