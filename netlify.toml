@@ -1,6 +1,0 @@
-[[redirects]]
-  from = "/api/*"                     # Capture tout chemin après /api/
-  to = "http://34.155.252.211:8080/:splat"  # Injection dynamique du chemin
-  status = 200                        # Code HTTP "OK"
-  force = true                        # Force la redirection même si Netlify pense connaître la route
-  headers = { Access-Control-Allow-Origin = "*" }  # Autorise les requêtes CORS
